@@ -129,7 +129,7 @@ export const Training = ({ isMobileMode = false }: TrainingProps) => {
   };
 
   const handleCreateTraining = (training: any) => {
-    setTrainings(prev => [...prev, training]);
+    setTrainings(prev => [training, ...prev]); // Place new training at the top
   };
 
   const handleDeleteTraining = (trainingId: string) => {
@@ -251,19 +251,17 @@ export const Training = ({ isMobileMode = false }: TrainingProps) => {
                     key={training.id} 
                     className={cn(
                       'cursor-pointer transition-all duration-300',
-                      isMobileMode ? 'py-1 px-2' : 'p-3',
+                      isMobileMode ? 'py-1 px-2' : (isSelected ? 'p-3' : 'py-2 px-3'), // Adjusted padding for desktop unselected
                       isSelected ? 'bg-primary/10 border-primary' : 'hover:bg-muted/50'
                     )}
                     onClick={() => setSelectedTraining(prev => prev === training.id ? null : training.id)}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1 overflow-hidden">
-                        <h4 className="font-medium truncate">{training.name}</h4>
+                        <h4 className="font-medium truncate my-0">{training.name}</h4>
                         <div className={cn(
-                          "transition-all duration-300 ease-in-out",
-                          isMobileMode
-                            ? (isSelected ? "max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0")
-                            : "max-h-40 opacity-100 mt-1" // Always visible on desktop
+                          "transition-all duration-300 ease-in-out overflow-hidden",
+                          isSelected ? "max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0" // Changed condition here
                         )}>
                           <div className="text-xs text-muted-foreground">
                             {training.type === 'classic' ? 'Классическая' : 'Повторение границ'}
